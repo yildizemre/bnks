@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Check, Cpu, Layers, Plus, Presentation, Sparkles, Target } from 'lucide-react'
+import { Check, Cpu, Download, Layers, Plus, Presentation, Sparkles, Target } from 'lucide-react'
 import { toast } from 'sonner'
 import { PageHeader } from '@/components/page-header'
 import { SmartImage } from '@/components/smart-image'
@@ -58,11 +58,18 @@ export function ExtraModulesPage() {
         title="Ek Modüller"
         description="Mevcut kamera ve AI altyapısının üzerine eklenebilecek analizler, KPI hedefleri ve devreye alma planı"
         actions={
-          <Button asChild>
-            <a href="/sunum" target="_blank" rel="noreferrer">
-              <Presentation /> Sunumu Aç
-            </a>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <a href="/hypevision-sunum.pdf" download>
+                <Download /> PDF İndir
+              </a>
+            </Button>
+            <Button asChild>
+              <a href="/sunum" target="_blank" rel="noreferrer">
+                <Presentation /> Sunumu Aç
+              </a>
+            </Button>
+          </>
         }
       />
 

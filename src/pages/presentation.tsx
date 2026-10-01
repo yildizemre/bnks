@@ -6,6 +6,7 @@ import {
   Cctv,
   ChevronLeft,
   ChevronRight,
+  Download,
   CircleCheck,
   Cpu,
   EyeOff,
@@ -38,6 +39,11 @@ const W = 1600
 const H = 900
 const C = { cyan: '#38d6ee', violet: '#8f7cf8', red: '#f2556b', amber: '#f5b74a', green: '#34d399' }
 const SHOT = '/images/sunum/'
+/** scripts/export-sunum.mjs üretir */
+const PDF_URL = '/hypevision-sunum.pdf'
+/** export betiği ?export ile açar: kontrol çubuğu ve ilerleme çizgisi gizlenir */
+const exporting = new URLSearchParams(window.location.search).has('export')
+const slideImage = (n: number) => `/images/sunum/slaytlar/${String(n).padStart(2, '0')}.jpg`
 
 const totalCameras = branches.reduce((s, b) => s + b.cameras, 0)
 const totalAtms = branches.reduce((s, b) => s + b.atms, 0)
@@ -950,20 +956,44 @@ export function PresentationPage() {
     return () => window.removeEventListener('keydown', onKey)
   }, [index, go, stacked])
 
+  // Telefonda canlı sahne yerine önceden üretilmiş slayt kareleri: hafif, yakınlaştırılabilir, çökmez
   if (stacked) {
     return (
-      <div className="min-h-svh bg-[#070b14]">
-        {slides.map((s, i) => (
-          <div key={i} id={String(i + 1)} style={{ height: H * scale }} className="relative overflow-hidden border-b border-white/10">
-            <div style={{ width: W, height: H, transform: `scale(${scale})`, transformOrigin: 'top left' }}>{s.render(i + 1)}</div>
-          </div>
-        ))}
+      <div className="min-h-svh bg-[#070b14] text-white">
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#070b14]/90 px-4 py-3 backdrop-blur">
+          <img src={brand.logoDark} alt={brand.name} className="h-5" />
+          <a href={PDF_URL} download className="flex items-center gap-1.5 rounded-full bg-[#38d6ee] px-4 py-2 text-sm font-semibold text-[#03141a]">
+            <Download className="size-4" /> PDF indir
+          </a>
+        </header>
+        <p className="px-4 pt-3 pb-1 text-xs text-white/50">{slides.length} slayt · yakınlaştırmak için iki parmakla büyütün</p>
+        <div className="space-y-2 p-2">
+          {slides.map((s, i) => (
+            <img
+              key={i}
+              id={String(i + 1)}
+              src={slideImage(i + 1)}
+              alt={`${i + 1}. ${s.section}`}
+              width={W}
+              height={H}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              className="block h-auto w-full rounded-md border border-white/10 bg-white/5"
+            />
+          ))}
+        </div>
+        <div className="p-4 pb-8">
+          <a href={PDF_URL} download className="flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 py-3 text-sm font-medium">
+            <Download className="size-4" /> Sunumu PDF olarak indir
+          </a>
+        </div>
       </div>
     )
   }
 
   return (
     <div
+      data-slide-count={slides.length}
       className="relative h-svh w-screen overflow-hidden bg-[#03060c] select-none"
       onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
@@ -980,11 +1010,14 @@ export function PresentationPage() {
       </div>
 
       {/* ilerleme çubuğu */}
+      {!exporting && (
       <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/5">
         <div className="h-full bg-gradient-to-r from-[#38d6ee] to-[#8f7cf8] transition-all duration-500" style={{ width: `${((index + 1) / slides.length) * 100}%` }} />
       </div>
+      )}
 
       {/* kontroller */}
+      {!exporting && (
       <div className="group absolute right-4 bottom-4 flex items-center gap-1 rounded-full border border-white/10 bg-black/50 p-1 text-white/70 opacity-40 backdrop-blur transition hover:opacity-100">
         <button className="rounded-full p-2 hover:bg-white/10" onClick={() => go(index - 1)} aria-label="Önceki">
           <ChevronLeft className="size-4" />
@@ -995,6 +1028,9 @@ export function PresentationPage() {
         <button className="rounded-full p-2 hover:bg-white/10" onClick={() => go(index + 1)} aria-label="Sonraki">
           <ChevronRight className="size-4" />
         </button>
+        <a className="rounded-full p-2 hover:bg-white/10" href={PDF_URL} download aria-label="PDF indir" title="PDF indir">
+          <Download className="size-4" />
+        </a>
         <button className="rounded-full p-2 hover:bg-white/10" onClick={() => setOverview(true)} aria-label="Tüm slaytlar (O)">
           <Grid3x3 className="size-4" />
         </button>
@@ -1006,6 +1042,7 @@ export function PresentationPage() {
           <Maximize className="size-4" />
         </button>
       </div>
+      )}
 
       {/* genel görünüm */}
       {overview && (
