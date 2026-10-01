@@ -1,4 +1,4 @@
-import { Building2, Radio } from 'lucide-react'
+import { Building2, Presentation, Radio } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import { BrandLogo } from './brand-logo'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,7 @@ const titles: Record<string, string> = {
   '/kameralar': 'Kameralar',
   '/subeler': 'Şubeler',
   '/yetkiler': 'Kullanıcı & Yetkiler',
+  '/ek-moduller': 'Ek Modüller',
   ...Object.fromEntries(modules.map((m) => [m.path, m.title])),
 }
 
@@ -66,6 +67,16 @@ export function SiteHeader() {
         {/* Telefonda Canlı anahtarı yerine ikon düğme */}
         <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setLive(!live)} aria-label={live ? 'Canlı akışı durdur' : 'Canlı akışı başlat'} aria-pressed={live}>
           <Radio className={cn(live ? 'text-emerald-500' : 'text-muted-foreground')} />
+        </Button>
+        <Button asChild size="sm" className="hidden md:inline-flex">
+          <a href="/sunum" target="_blank" rel="noreferrer">
+            <Presentation /> Sunum
+          </a>
+        </Button>
+        <Button asChild variant="ghost" size="icon" className="md:hidden" aria-label="Sunumu aç">
+          <a href="/sunum" target="_blank" rel="noreferrer">
+            <Presentation />
+          </a>
         </Button>
         <NotificationBell />
         <ThemeToggle />

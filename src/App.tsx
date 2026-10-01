@@ -9,12 +9,14 @@ import { AlarmsPage } from '@/pages/alarms'
 import { BranchesPage } from '@/pages/branches'
 import { CamerasPage } from '@/pages/cameras'
 import { DashboardPage } from '@/pages/dashboard'
+import { ExtraModulesPage } from '@/pages/extra-modules'
 import { LoginPage } from '@/pages/login'
 import { AtmPage } from '@/pages/modules/atm'
 import { CashPage } from '@/pages/modules/cash'
 import { FraudPage } from '@/pages/modules/fraud'
 import { InsightPage } from '@/pages/modules/insight'
 import { OperationsPage } from '@/pages/modules/operations'
+import { PresentationPage } from '@/pages/presentation'
 import { UsersPage } from '@/pages/users'
 
 function NotFound() {
@@ -37,6 +39,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/giris" element={<LoginPage />} />
+              <Route path="/sunum" element={<PresentationPage />} />
               <Route element={<AppLayout />}>
                 <Route index element={<DashboardPage />} />
                 <Route path="alarmlar" element={<AlarmsPage />} />
@@ -45,6 +48,7 @@ export default function App() {
                 <Route path="moduller/operasyonel-verimlilik" element={<OperationsPage />} />
                 <Route path="moduller/nakit-guvenligi" element={<CashPage />} />
                 <Route path="moduller/atm-guvenligi" element={<AtmPage />} />
+                <Route path="ek-moduller" element={<ExtraModulesPage />} />
                 <Route path="kameralar" element={<CamerasPage />} />
                 <Route path="subeler" element={<BranchesPage />} />
                 <Route path="yetkiler" element={<UsersPage />} />

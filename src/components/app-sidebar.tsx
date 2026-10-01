@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Bell, Building2, ChevronsUpDown, Cctv, LayoutDashboard, LogOut, ShieldCheck, UserRound } from 'lucide-react'
+import { Bell, Building2, ChevronsUpDown, Cctv, ExternalLink, LayoutDashboard, LogOut, Presentation, Puzzle, ShieldCheck, UserRound } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -26,6 +26,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { brand } from '@/config/brand'
+import { extraModules } from '@/data/extra-modules'
 import { modules } from '@/data/modules'
 import { roleLabel, useAuth } from '@/lib/auth'
 import { useNotifications } from '@/lib/notifications'
@@ -108,6 +109,32 @@ export function AppSidebar() {
                   <SidebarMenuBadge className="font-mono text-[10px] text-muted-foreground">M{m.no}</SidebarMenuBadge>
                 </SidebarMenuItem>
               ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Büyüme</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive('/ek-moduller')} tooltip="Ek Modüller">
+                  <Link to="/ek-moduller">
+                    <Puzzle />
+                    <span>Ek Modüller</span>
+                  </Link>
+                </SidebarMenuButton>
+                <SidebarMenuBadge className="font-mono text-[10px] text-muted-foreground">+{extraModules.length}</SidebarMenuBadge>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Sunum">
+                  <a href="/sunum" target="_blank" rel="noreferrer">
+                    <Presentation />
+                    <span>Sunum</span>
+                    <ExternalLink className="ml-auto size-3.5! opacity-50" />
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
